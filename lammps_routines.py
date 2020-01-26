@@ -2,9 +2,14 @@ from lammps import PyLammps
 import numpy as np
 from scipy.optimize import leastsq
 from tqdm import tqdm
+import io
+import sys
 
 def initialize():
+    text_trap = io.StringIO()
+    sys.stdout = text_trap
     L = PyLammps()
+    sys.stdout = sys.__stdout__
     L.command("echo log")
     L.command("units metal")
     L.command("atom_style atomic")

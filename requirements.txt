@@ -2,4 +2,7 @@ numpy
 scipy
 tqdm 
 matplotlib
+dask
+distributed
+tables
 
