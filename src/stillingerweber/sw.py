@@ -1,6 +1,9 @@
 """
 SW class
 """
+
+import numpy as np
+
 class Sw:
     """
     A class to depict SW potential
@@ -21,14 +24,14 @@ class Sw:
         self.p = 4
         self.q = 0
         self.tol = 0
-        
+
         if params is not None:
             #params should be a dict with keywords as the variable params - epsilon, sigma, a , lambda
             self.epsilon = params['epsilon']
             self.sigma = params['sigma']
             self.a = params['a']
             self.lmbda = params['lambda']
-    
+
     def write(self, outfile):
         """
         Write potential to a file
@@ -40,4 +43,28 @@ class Sw:
             fout.write("#   epsilon, sigma, a, lambda, gamma, costheta0, A, B, p, q, tol\n")
             fout.write("%s %s %s %f %f %f %f %f %f %f %f %f %f %f\n"%(self.elei, self.elej, self.elek, self.epsilon,
                                                                     self.sigma, self.a, self.lmbda, self.gamma, self.costheta0, self.A,
-                                                                    self.B, self.p, self.q, self.tol))        
+                                                                    self.B, self.p, self.q, self.tol))
+
+    def phi2(self, rij, separate=False):
+        """
+        Calculate the two body term when rij is given
+        If separate, return two dfferent functions
+        rij should be numpy array
+        """
+        prefactor = self.A*self.epsilon
+        term1 = self.B*(self.sigma*(1.0/rij))**self.p - (self.sigma*(1.0/rij))**self.q
+        term2 = np.exp(self.sigma/(rij-(self.a*self.sigma)))
+        if separate:
+            return prefactor*term1, term2
+        else:
+            return prefactor*term1*term2
+
+    def phi3(self, rij, rik, costheta):
+        """
+        Calculate the three-body term for a fixed costheta
+        """
+        prefactor = self.lambda*self.epsilon
+        term1 = (costheta-self.costheta0)**2
+        term2 = np.exp(self.gamma*self.sigma/(rij-self.a*self.sigma))
+        term3 = np.exp(self.gamma*self.sigma/(rik-self.a*self.sigma))
+        return prefactor*term1*term2*term3
