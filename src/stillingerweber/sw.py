@@ -8,7 +8,7 @@ class Sw:
     """
     A class to depict SW potential
     """
-    def __init__(self, tag, params = None):
+    def __init__(self, tag, **kwargs):
         self.tag = tag
         self.elei = 'Si'
         self.elej = 'Si'
@@ -25,12 +25,8 @@ class Sw:
         self.q = 0
         self.tol = 0
 
-        if params is not None:
-            #params should be a dict with keywords as the variable params - epsilon, sigma, a , lambda
-            self.epsilon = params['epsilon']
-            self.sigma = params['sigma']
-            self.a = params['a']
-            self.lmbda = params['lambda']
+        allargs = ['epsilon', 'sigma', 'a', 'lambda', 'gamma', 'A', 'B', 'p', 'q', 'costheta0']
+        self.__dict__.update((k, v) for k, v in kwargs.items() if k in allargs)
 
     def write(self, outfile):
         """
@@ -52,8 +48,8 @@ class Sw:
         rij should be numpy array
         """
         prefactor = self.A*self.epsilon
-        term1 = self.B*(self.sigma*(1.0/rij))**self.p - (self.sigma*(1.0/rij))**self.q
-        term2 = np.exp(self.sigma/(rij-(self.a*self.sigma)))
+        term1 = self.B*(self.sigma**self.p)*(rij**(-1*self.p)) - (self.sigma**self.q)*(rij**(-1*self.q))
+        term2 = np.exp(self.sigma/(rij-self.a*self.sigma))
         if separate:
             return prefactor*term1, term2
         else:
@@ -63,7 +59,7 @@ class Sw:
         """
         Calculate the three-body term for a fixed costheta
         """
-        prefactor = self.lambda*self.epsilon
+        prefactor = self.lmbda*self.epsilon
         term1 = (costheta-self.costheta0)**2
         term2 = np.exp(self.gamma*self.sigma/(rij-self.a*self.sigma))
         term3 = np.exp(self.gamma*self.sigma/(rik-self.a*self.sigma))
