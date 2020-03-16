@@ -31,8 +31,13 @@ def make_plot(rij, rik, phi2, phi3, threebody=False):
     """
     Make sw plots
     """
+    try:
+        fig.close()
+    except:
+        pass
+    
     if not threebody:
-        fig = plt.figure(figsize=(10, 5))
+        fig = plt.figure(figsize=(6, 3))
         ax = fig.add_subplot(1,1,1)
         #ax1 = fig.add_subplot(1,2,2)
         ax.plot(rij, phi2, color="#AD1457", linewidth=3)
@@ -43,16 +48,16 @@ def make_plot(rij, rik, phi2, phi3, threebody=False):
         ax.set_ylabel("Energy")
         ax.set_title("$\phi_2$")
     else:
-        fig = plt.figure(figsize=(10, 5))
+        fig = plt.figure(figsize=(6, 3))
         ax1 = fig.add_subplot(1,1,1)
         X, Y = np.meshgrid(rij, rik)
-        ax1.contour(X, Y, phi3, 20, cmap='magma')
+        pic = ax1.contour(X, Y, phi3, 20, cmap='magma')
         ax1.set_xlabel("$r_{ij}$")
         ax1.set_ylabel("$r_{ik}$")
         #ax1.set_ylim(0, 8)
         #ax1.set_xlim(0, 8)
         ax1.set_title("$\phi_3$")
-        plt.colorbar()
+        fig.colorbar(pic)
 
 def run_sw_2d(epsilon=None, sigma=None, a=None, lmbda=None, 
           gamma=None, costheta0=-0.333333, A=None, B=None, 
