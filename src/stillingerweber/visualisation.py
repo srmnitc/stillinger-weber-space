@@ -86,7 +86,7 @@ def run_sw_3d(epsilon=None, sigma=None, a=None, lmbda=None,
     X, Y = np.meshgrid(rij, rik)
     phi3 = sw.phi3(X, Y, costheta)
     
-    make_plot(rij, rik, phi2, phi3)
+    make_plot(rij, rik, phi2, phi3, threebody=True)
 
 def create_sw_widgets(threebody=False):
     params = ['epsilon', 'sigma', 'a', 'lambda', 'gamma', 'A', 'B', 'p', 'q', 'costheta']
