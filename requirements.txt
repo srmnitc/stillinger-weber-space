@@ -2,9 +2,7 @@ numpy
 scipy
 tqdm 
 matplotlib
-dask
-distributed
-tables
-bokeh
-graphviz
+numpy
+ipympl
+ipywidgets
 
