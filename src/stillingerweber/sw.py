@@ -3,6 +3,8 @@ SW class
 """
 
 import numpy as np
+import pyscal.core as pc
+import pyscal.crystal_structures as pcs
 
 class Sw:
     """
@@ -65,7 +67,34 @@ class Sw:
         term3 = np.exp(self.gamma*self.sigma/(rik-self.a*self.sigma))
         return prefactor*term1*term2*term3
 
-    def energy(self, sys):
+
+    def energy(self, structure, alat):
+        """
+        Make a cluster and Calculate energy
+        """
+        self.cluster = self.create_atom_cluster(structure, alat)
+        return _energy(self.cluster)
+
+    def create_atom_cluster(self, structure, alat):
+        """
+        Create a one atom cluster
+        Returns a sys object
+        """
+        atoms, box = pcs.make_crystal(structure=structure, lattice_constant=alat, repetitions=[3,3,3])
+        sys = pc.System()
+        sys.atoms = atoms
+        sys.box = box
+        sys.find_neighbors(method='cutoff', cutoff=0)
+        atoms = sys.atoms
+        ind = int(len(atoms)/2)
+        neighs = [atoms[x] for x in atoms[ind].neighbors]
+        neighs = [atoms[ind]] + neighs
+        sys1 = pc.System()
+        sys1.box = sys.box
+        sys1.atoms = neighs
+        return sys1
+
+    def _energy(self, sys):
         """
         Calculate two-three body energy contribution
         """
