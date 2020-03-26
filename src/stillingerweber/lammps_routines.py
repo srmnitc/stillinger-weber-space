@@ -52,6 +52,7 @@ def routine_lattice_constant(sw, structure, alat, reps=(3,3,3), mass=28.08):
     L = initialize()
     L = set_lattice(L, structure, alat, reps=reps)
     L = set_potential(L, potfile, mass=mass)
+    L.fix("1 all box/relax iso 0. vmax 0.0001 nreset 1")
     L.minimize(" 1.0e-8 1.0e-8 100000000 100000000")
     vol = L.eval('vol')/(reps[0]*reps[1]*reps[2])
     lat = vol**(1/3)
