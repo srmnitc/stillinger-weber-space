@@ -105,11 +105,11 @@ class Sw:
             atomi = atoms[i]
             for j in range(i+1, len(atoms)):
                 atomj = atoms[j]
-                rij, vec1 = sys.get_distance(atomi, atomj)
+                rij, vec1 = sys.get_distance(atomi, atomj, vector=True)
                 phi2sum += 0.5*self.phi2(rij)
                 for k in range(j+1, len(atoms)):
                     atomk = atoms[k]
-                    rik, vec2 = sys.get_distance(atomi, atomk)
+                    rik, vec2 = sys.get_distance(atomi, atomk, vector=True)
                     #find costheta
                     costheta = np.dot(np.array(vec1), np.array(vec2))/(rij*rik)
                     phi3sum += self.phi3(rij, rik, costheta)
