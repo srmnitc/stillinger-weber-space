@@ -64,3 +64,24 @@ class Sw:
         term2 = np.exp(self.gamma*self.sigma/(rij-self.a*self.sigma))
         term3 = np.exp(self.gamma*self.sigma/(rik-self.a*self.sigma))
         return prefactor*term1*term2*term3
+
+    def energy(self, sys):
+        """
+        Calculate two-three body energy contribution
+        """
+        atoms = sys.atoms
+        phi2sum = 0
+        phi3sum = 0
+        for i in range(1):
+            atomi = atoms[i]
+            for j in range(i+1, len(atoms)):
+                atomj = atoms[j]
+                rij, vec1 = sys.get_distance(atomi, atomj)
+                phi2sum += 0.5*self.phi2(rij)
+                for k in range(j+1, len(atoms)):
+                    atomk = atoms[k]
+                    rik, vec2 = sys.get_distance(atomi, atomk)
+                    #find costheta
+                    costheta = np.dot(np.array(vec1), np.array(vec2))/(rij*rik)
+                    phi3sum += self.phi3(rij, rik, costheta)
+        return phi2sum, phi3sum, phi2sum+phi3sum
