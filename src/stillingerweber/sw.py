@@ -73,7 +73,7 @@ class Sw:
         Make a cluster and Calculate energy
         """
         self.cluster = self.create_atom_cluster(structure, alat)
-        return _energy(self.cluster)
+        return self._energy(self.cluster)
 
     def create_atom_cluster(self, structure, alat):
         """
