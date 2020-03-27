@@ -27,7 +27,7 @@ class Sw:
         self.q = 0
         self.tol = 0
 
-        allargs = ['epsilon', 'sigma', 'a', 'lambda', 'gamma', 'A', 'B', 'p', 'q', 'costheta0']
+        allargs = ['epsilon', 'sigma', 'a', 'lmbda', 'gamma', 'A', 'B', 'p', 'q', 'costheta0']
         self.__dict__.update((k, v) for k, v in kwargs.items() if k in allargs)
 
     def write(self, outfile):
