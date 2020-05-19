@@ -5,6 +5,9 @@ from tqdm import tqdm
 import io
 import sys
 import os
+import warnings
+
+warnings.warn("this module has a conflict with pylammpsmpi")
 
 def initialize():
     text_trap = io.StringIO()
