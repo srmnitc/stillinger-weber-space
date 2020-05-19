@@ -50,12 +50,13 @@ class Sw:
         rij should be numpy array
         """
         prefactor = self.A*self.epsilon
-        term1 = self.B*(self.sigma**self.p)*(rij**(-1*self.p)) - (self.sigma**self.q)*(rij**(-1*self.q))
-        term2 = np.exp(self.sigma/(rij-self.a*self.sigma))
+        postfactor = np.exp(self.sigma/(rij-self.a*self.sigma))
+        term1 = self.B*(self.sigma**self.p)*(rij**(-1*self.p))
+        term2 = (self.sigma**self.q)*(rij**(-1*self.q))
         if separate:
-            return prefactor*term1, term2
+            return prefactor*term1*postfactor, prefactor*term2*postfactor
         else:
-            return prefactor*term1*term2
+            return prefactor*(term1 - term2)*postfactor
 
     def phi3(self, rij, rik, costheta):
         """
