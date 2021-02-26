@@ -83,8 +83,9 @@ class Sw:
         """
         atoms, box = pcs.make_crystal(structure=structure, lattice_constant=alat, repetitions=[3,3,3])
         sys = pc.System()
-        sys.atoms = atoms
+        #sys.atoms = atoms
         sys.box = box
+        sys.atoms = atoms
         sys.find_neighbors(method='cutoff', cutoff=0)
         atoms = sys.atoms
         ind = int(len(atoms)/2)
